@@ -1,0 +1,9 @@
+Puntos_por_ganador,3,
+Puntos_por_empate,1,
+Puntos_por_perdedor,0,
+Puntos_ronda_completa,5,
+Puntos_fase_completa,10,
+conexion_mysql_db,jdbc:mysql://localhost:3306/diegodb,
+usuario_db,root,
+"contraseña_db, ,"
+"consulta_a_mysql,select * from pronostico,"

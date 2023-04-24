@@ -1,0 +1,68 @@
+package trabajoIntegrador4;
+
+
+import enum4.Resultado;
+
+public class Ronda {
+    private String nro;
+    private Partido[] partidos;
+
+    public Ronda() {}
+
+    public Ronda(String nro, Partido[] partidos) {
+        this.nro = nro;
+        this.partidos = partidos;
+    }
+
+    public void setPartidos(Partido[] partidos) {
+        this.partidos = partidos;
+    }
+
+    public Partido[] getPartidos() {
+        return partidos;
+    }
+
+    public void setNro(String nro) {
+        this.nro = nro;
+    }
+
+    public String getNro() {
+        return nro;
+    }
+
+    public int puntosRonda(int numeroPartido,Equipo unEquipo) {
+        int result = 0;
+            if (partidos[numeroPartido].resultado(unEquipo) == Resultado.ganador) {
+                result = PuntosPartidos.puntosGanador;
+            }
+
+        if (partidos[numeroPartido].resultado(unEquipo) == Resultado.empate) {
+            result = PuntosPartidos.puntosEmpate;
+        }
+        if (partidos[numeroPartido].resultado(unEquipo) == Resultado.perdedor) {
+            result = PuntosPartidos.puntosPerdedor;
+        }
+
+        return result;
+    }
+
+    public int puntosRondaPronostico(int numeroPartido,Equipo unEquipo,Resultado unResultado) {
+        int result = 0;
+        if (partidos[numeroPartido].resultado(unEquipo) == unResultado && unResultado == Resultado.ganador) {
+            result = PuntosPartidos.puntosGanador;
+        }
+
+        if (partidos[numeroPartido].resultado(unEquipo) == unResultado && unResultado == Resultado.empate) {
+            result = PuntosPartidos.puntosEmpate;
+        }
+        if (partidos[numeroPartido].resultado(unEquipo) == unResultado && unResultado == Resultado.perdedor) {
+            result = PuntosPartidos.puntosGanador;
+        }
+        if (partidos[numeroPartido].resultado(unEquipo) != unResultado) {
+            result = PuntosPartidos.puntosPerdedor;
+        }
+
+        return result;
+    }
+
+}

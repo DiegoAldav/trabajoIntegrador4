@@ -1,0 +1,7 @@
+package trabajoIntegrador4;
+
+public class PuntosPartidos {
+    public static int puntosGanador;
+    public static int puntosEmpate;
+    public static int puntosPerdedor;
+}

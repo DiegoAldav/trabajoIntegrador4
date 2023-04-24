@@ -1,0 +1,8 @@
+package enum4;
+
+public enum Resultado {
+    ganador,
+    perdedor,
+    empate,
+    desconocido;
+}
