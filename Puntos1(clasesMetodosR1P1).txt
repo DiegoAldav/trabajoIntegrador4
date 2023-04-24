@@ -1,0 +1,189 @@
+package Programa4;
+
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import enum4.Resultado;
+import trabajoIntegrador4.*;
+
+public class Puntaje {
+
+    public static void main(String[] args) throws Exception {
+
+        String archivo = "/home/mustafa/trabajos/trabajoIntegrador4/resultados.csv";
+        String archivo1 = "/home/mustafa/trabajos/trabajoIntegrador4/pronostico.csv";
+        String archivoConf = "/home/mustafa/trabajos/trabajoIntegrador4/configuracion.csv";
+
+        List<String> idpartidos = Files.readAllLines(Paths.get(archivo));
+        //idpartido.remove(0);
+        List<String> idpronosticos = Files.readAllLines(Paths.get(archivo1));
+
+        List<String> idconfiguracion = Files.readAllLines(Paths.get(archivoConf));
+
+        ///////////////////////////////////////////////////////////////////
+        //   CONFIGURACION
+        System.out.println("VALOR DE PUNTOS");
+
+        String[] puntosGan = idconfiguracion.get(0).split(",");
+        PuntosPartidos.puntosGanador = Integer.parseInt(puntosGan[1]);
+        System.out.println("puntos ganador: " + PuntosPartidos.puntosGanador);
+
+        String[] puntosEmp = idconfiguracion.get(1).split(",");
+        PuntosPartidos.puntosEmpate = Integer.parseInt(puntosEmp[1]);
+        System.out.println("puntos empate: " + PuntosPartidos.puntosEmpate);
+
+        String[] puntosPer = idconfiguracion.get(2).split(",");
+        PuntosPartidos.puntosPerdedor = Integer.parseInt(puntosPer[1]);
+        System.out.println("puntos perdedor: " + PuntosPartidos.puntosPerdedor);
+
+        System.out.println("");
+        ///////////////////////////////////////////////////////////////////
+        //   PARTICIPANTE
+
+        Participante participante1 = new Participante("mariana",0);
+        Participante participante2 = new Participante("pedro",15);
+        Participante participante3 = new Participante("daniel", 10);
+        Participante participante4 = new Participante("natalia", 25);
+        Participante[] participantesL1 = new Participante[4];
+        Participante[] aux = new Participante[participantesL1.length];
+        participantesL1[0] = participante1;
+        participantesL1[1] = participante2;
+        participantesL1[2]= participante3;
+        participantesL1[3] = participante4;
+        System.out.println("ORDEN PARTICIPANTES");
+        /*for (int i = 0;i <participantesL1.length; i++) {
+            System.out.println(participantesL1[i].puntosParticipante+" "+participantesL1[i].nombre);
+        }*/
+
+        for (int i = 0; i < participantesL1.length-1; i++) {
+            for (int j = 0; j < participantesL1.length-i-1; j++) {
+                if (participantesL1[j+1].puntosParticipante > participantesL1[j].puntosParticipante) {
+                    aux[0] = participantesL1[j+1];
+                    participantesL1[j+1] =participantesL1[j];
+                    participantesL1[j] = aux[0];
+                }
+            }
+        }
+
+
+        PuestosParticipante listaParticipante = new PuestosParticipante(participantesL1);
+        //System.out.println("lista: "+listaParticipante.getParticipante(participante1)+" "+listaParticipante.getPuntosParticipante(participante1));
+        System.out.println("lista1: "+listaParticipante.getParticipante1(0)+" "+listaParticipante.getPuntosParticipante1(0));
+        System.out.println("lista1: "+listaParticipante.getParticipante1(1)+" "+listaParticipante.getPuntosParticipante1(1));
+        System.out.println("lista1: "+listaParticipante.getParticipante1(2)+" "+listaParticipante.getPuntosParticipante1(2));
+        System.out.println("");
+
+        listaParticipante.ordenarLista();
+
+        System.out.println("lista2: "+listaParticipante.getParticipante1(0)+" "+listaParticipante.getPuntosParticipante1(0));
+        System.out.println("lista2: "+listaParticipante.getParticipante1(1)+" "+listaParticipante.getPuntosParticipante1(1));
+        System.out.println("lista2: "+listaParticipante.getParticipante1(2)+" "+listaParticipante.getPuntosParticipante1(2));
+        System.out.println("");
+
+
+
+
+        ///////////////////////////////////////////////////////////////////
+        // Ronda
+
+        Partido[] partidosR1 = new Partido[idpartidos.size()];
+        Ronda primerRonda = null;
+
+        for (int i = 1; i < (idpartidos.size()); i++) {
+            String[] partidos = idpartidos.get(i).split(",");
+
+            Equipo equipo1 = new Equipo();
+            equipo1.setNombre(partidos[1]);
+            Equipo equipo2 = new Equipo();
+            equipo2.setNombre(partidos[4]);
+
+            int golesEquipo1 = Integer.parseInt(partidos[2]);
+            int golesEquipo2 = Integer.parseInt(partidos[3]);
+
+            //Partido partido = new Partido(equipo1, equipo2, golesEquipo1, golesEquipo2);
+            partidosR1[i] = new Partido(equipo1, equipo2, golesEquipo1, golesEquipo2);
+
+            //primerRonda[i] = partido;
+            //System.out.println(equipo1.getNombre()+" "+golesEquipo1+" "+golesEquipo2+" "+equipo2.getNombre());
+            //primRonda = new Ronda("1",partidosR1);
+            System.out.println("partido "+i+": "+partidosR1[i].resultado(equipo1));
+            /*if (partidosR1[i].resultado(equipo1)== Resultado.ganador){
+                puntosParticipante += 3;
+                System.out.println("suma 3");
+            }*/
+            primerRonda = new Ronda("1",partidosR1);
+            //Ronda primerRonda = new Ronda();
+            System.out.println("puntos ronda: "+primerRonda.puntosRonda(i,equipo1));
+            //System.out.println("puntos de pronostico: "+primerRonda.puntosRondaPronostico(i,equipo1,Resultado.ganador));
+        }
+
+        /*Equipo equipo1 = new Equipo();
+        equipo1.setNombre("England");*/
+
+       // System.out.println("final: "+primerRonda.puntosRonda(2,equipo1));
+        //Ronda primerRonda = new Ronda("1",partidosR1);
+        //System.out.println(partidosR1[1].resultado(equipo1));
+
+        ////////////////////////////////////////////////
+        //  RONDA 1 JUGADOR 3
+
+            for (int z = 1; z < idpronosticos.size(); z++) {
+                int i = z;
+                String[] idpz = idpronosticos.get(z).split(",");
+                //participante3.setNombre(idpz[0]);
+
+                Equipo equipopron1 = new Equipo(idpz[1], "");
+                Equipo equipopron2 = new Equipo(idpz[5], "");
+
+                int egp1 = 0;
+                int egp2 = 0;
+                if (idpz[2] != "") {
+                    egp1 = 1;
+                    egp2 = 0;
+                } else if (idpz[4] != "") {
+                    egp1 = 0;
+                    egp2 = 1;
+                } else if (idpz[3] != "") {
+                    egp1 = 0;
+                    egp2 = 0;
+                } else {
+                    System.out.println("falta rellenar la casilla de ganador/empate/perdedor de ese partido en pronostico.csv del jugador/a: "+participante1.nombre);
+                    if (partidosR1[i].getGolesEquipo1() == partidosR1[i].getGolesEquipo2()) {
+                        egp2 = 30;
+                    }
+                }
+
+                Partido partidopron = new Partido(equipopron1, equipopron2, egp1, egp2);
+
+                Pronostico pronostico = new Pronostico(partidosR1[i], partidosR1[i].getEquipo1(), partidopron.resultado(equipopron1));
+
+                if (pronostico.puntos() != 0) {
+                    System.out.println(participante1.nombre + " asierto en el partido " + i + " de la primer ronda entre " + equipopron1.getNombre()+ " y " + equipopron2.getNombre() + " suma "+pronostico.puntos()+" punto.");
+                    System.out.println(participante1.nombre + " asierto en el partido " + i + " de la primer ronda entre " + equipopron1.getNombre()+ " y " + equipopron2.getNombre() + " suma "+primerRonda.puntosRondaPronostico(i,partidosR1[i].getEquipo1(),partidopron.resultado(equipopron1))+" punto.");
+                    System.out.println(partidosR1[i].resultado(partidosR1[i].getEquipo1())+"  "+ partidopron.resultado(equipopron1));
+                    System.out.println("pronostico.resultado: "+pronostico.puntos1()+" "+pronostico.puntos2());
+                }
+                participante1.puntosParticipante += primerRonda.puntosRondaPronostico(i,partidosR1[i].getEquipo1(),partidopron.resultado(equipopron1));
+
+            }
+
+        System.out.println("");
+
+        // FIN JUGADOR 1
+        //////////////////////////////////////////////////////////////////////
+        System.out.println("PUNTOS PARTICIPANTE");
+        System.out.println("jugador/a: "+participante1.nombre+" total de puntos "+participante1.puntosParticipante);
+
+
+        listaParticipante.ordenarLista();
+        System.out.println("lista2: "+listaParticipante.getParticipante1(0)+" "+listaParticipante.getPuntosParticipante1(0));
+        System.out.println("lista2: "+listaParticipante.getParticipante1(1)+" "+listaParticipante.getPuntosParticipante1(1));
+        System.out.println("lista2: "+listaParticipante.getParticipante1(2)+" "+listaParticipante.getPuntosParticipante1(2));
+        System.out.println("");
+
+    }
+}
+

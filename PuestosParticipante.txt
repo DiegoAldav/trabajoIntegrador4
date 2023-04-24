@@ -1,0 +1,52 @@
+package trabajoIntegrador4;
+
+
+import java.util.Arrays;
+
+public class PuestosParticipante {
+    public Participante[] participantes;
+
+    public PuestosParticipante() {}
+
+    public PuestosParticipante(Participante[] participantes) {
+        this.participantes = participantes;
+    }
+
+    public void setParticipantes(Participante[] participantes) {
+        this.participantes = participantes;
+    }
+
+    public Participante[] getParticipantes() {
+        return participantes;
+    }
+
+    public String getParticipante(Participante unParticipante) {
+        return unParticipante.nombre;
+    }
+    public int getPuntosParticipante(Participante unParticipante) {
+        return unParticipante.puntosParticipante;
+    }
+
+    public String getParticipante1(int unIndex) {
+        return participantes[unIndex].nombre;
+    }
+    public int getPuntosParticipante1(int unIndex) {
+        return participantes[unIndex].puntosParticipante;
+    }
+
+    public void ordenarLista() {
+        Participante[] aux = new Participante[1];
+        for (int i = 0; i < participantes.length-1; i++) {
+            for (int j = 0; j < participantes.length-i-1; j++) {
+                if (participantes[j+1].puntosParticipante > participantes[j].puntosParticipante) {
+                    aux[0] = participantes[j+1];
+                    participantes[j+1] =participantes[j];
+                    participantes[j] = aux[0];
+                }
+            }
+        }
+
+    }
+
+}
+
